@@ -9,18 +9,18 @@ Proof-of-Possession sequence diagram
 .. seqdiag::
 
     seqdiag {
-      Client    <-      Provider [label = "Provider keys"]
-      Client    ->      Client [label = "Gen. key-pair"]
-      Client    ->      Provider [label = "Authn. req."]
-      Client    <-      Provider
-      Client    ->      Provider [label = "Token req. per [1]"]
-      Provider  ->      Provider [label = "Make access token with 'cnf' per [2]"]
-      Provider  ->      Provider [label = "Sign access token"]
-      Client    <-      Provider [label = "Return token with token_type='pop' per [2]"]
-      Client    ->      Provider [label = "Signed user info req. per [3]"]
-      Provider  ->      Provider [label = "Verify sig. of access token"]
-      Provider  ->      Provider [label = "Verify hash of signed request"]
-      Provider  ->      Provider [label = "Verify sig. of user info req. against 'cnf' in access token"]
+      Client    <-      Provider [label = "Provider keys"];
+      Client    ->      Client [label = "Gen. key-pair"];
+      Client    ->      Provider [label = "Authn. req."];
+      Client    <-      Provider;
+      Client    ->      Provider [label = "Token req. per [1]"];
+      Provider  ->      Provider [label = "Make access token with 'cnf' per [2]"];
+      Provider  ->      Provider [label = "Sign access token"];
+      Client    <-      Provider [label = "Return token with token_type='pop' per [2]"];
+      Client    ->      Provider [label = "Signed user info req. per [3]"];
+      Provider  ->      Provider [label = "Verify sig. of access token"];
+      Provider  ->      Provider [label = "Verify hash of signed request"];
+      Provider  ->      Provider [label = "Verify sig. of user info req. against 'cnf' in access token"];
       Client    <-      Provider [label = "User info response if successful PoP"];
     }
 
@@ -42,21 +42,20 @@ Specifics for the use case:
     :desctable:
 
     seqdiag {
-      Client    ->      Provider [label = "Webfinger"]
-      Client    <-      Provider
-      Client    ->      Provider [label = "Discovery"]
-      Client    <-      Provider
-      Client    ->      Provider [label = "Fetch keys from jwks_uri"]
-      Client    <-      Provider
-      Client    ->      Provider [label = "Registration"]
-      Client    <-      Provider
-      Client    ->      Provider [label = "Authn. req."]
-      Client    <-      Provider
-      Client    ->      Provider [label = "Token req."]
-      Client    <-      Provider
-      Client    ->      Provider [label = "User info req."]
+      Client    ->      Provider [label = "Webfinger"];
       Client    <-      Provider;
-
+      Client    ->      Provider [label = "Discovery"];
+      Client    <-      Provider;
+      Client    ->      Provider [label = "Fetch keys from jwks_uri"];
+      Client    <-      Provider;
+      Client    ->      Provider [label = "Registration"];
+      Client    <-      Provider;
+      Client    ->      Provider [label = "Authn. req."];
+      Client    <-      Provider;
+      Client    ->      Provider [label = "Token req."];
+      Client    <-      Provider;
+      Client    ->      Provider [label = "User info req."];
+      Client    <-      Provider;
 
       Client [description = "pyoidc relying party"];
       Provider [description = "pyoidc provider"];
