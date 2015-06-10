@@ -1,6 +1,8 @@
 Overview for PoP solution
 =========================
 
+A general overview of what the POC for PoP will cover. In the sequence diagram you can see references to PoP
+specifications indicating where the functionality will be added in the OIDC flow.
 
 
 Sequence diagram
