@@ -106,15 +106,6 @@ pygments_style = 'sphinx'
 # a list of builtin themes.
 html_theme_path = [alabaster.get_path()]
 html_theme = 'alabaster'
-html_sidebars = {
-   '**': [
-       'about.html',
-       'navigation.html',
-       'searchbox.html',
-       'donate.html',
-   ]
-}
-
 html_theme_options = {
    'description': '',
    'github_button': False,
