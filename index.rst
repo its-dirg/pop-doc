@@ -1,7 +1,7 @@
 .. PoP doc documentation master file, created by
-sphinx-quickstart on Wed Jun  3 14:20:23 2015.
-You can adapt this file completely to your liking, but it should at least
-contain the root `toctree` directive.
+    sphinx-quickstart on Wed Jun  3 14:20:23 2015.
+    You can adapt this file completely to your liking, but it should at least
+    contain the root `toctree` directive.
 
 A pyoidc Proof-of-Possession POC
 ================================
@@ -88,9 +88,9 @@ Details of the implementation
 =============================
 
 * The signature of the HTTP request to the userinfo endpoint is placed in the
-request body as the parameter ``http_signature``.
+  request body as the parameter ``http_signature``.
 * When creating/verifying the signature of the HTTP request, SHA{256, 384, 512}
-is used.
+  is used.
 * The access token is signed by the provider using the 'RS256' algorithm.
 
 
