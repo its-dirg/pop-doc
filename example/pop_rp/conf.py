@@ -12,7 +12,8 @@ POP_KEYS = [
     {"type": "RSA", "key": "keys/key.pem", "use": ["sig"]}
 ]
 
-# information used when registering the client, this may be the same for all OPs
+# information used when registering the client,
+# this may be the same for all OPs
 
 ME = {
     "application_type": "web",

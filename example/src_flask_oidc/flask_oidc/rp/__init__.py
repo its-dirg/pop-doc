@@ -1,3 +1,4 @@
+# pylint: disable=missing-docstring
 __author__ = 'mathiashedstrom'
 
-user_store = {}
+USER_STORE = {}

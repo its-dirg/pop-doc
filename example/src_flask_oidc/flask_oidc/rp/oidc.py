@@ -50,20 +50,20 @@ class Client(oic.Client):
 
         request_args.update(kwargs)
         cis = self.construct_AuthorizationRequest(request_args=request_args)
-        logger.debug("request: %s" % cis)
+        logger.debug("request: %s", cis)
 
         url, body, ht_args, cis = self.uri_and_body(AuthorizationRequest, cis,
                                                     method="GET",
                                                     request_args=request_args)
 
-        logger.debug("body: %s" % body)
-        logger.info("URL: %s" % url)
-        logger.debug("ht_args: %s" % ht_args)
+        logger.debug("body: %s", body)
+        logger.info("URL: %s", url)
+        logger.debug("ht_args: %s", ht_args)
 
         resp = Redirect(str(url))
         if ht_args:
             resp.headers.extend([(a, b) for a, b in ht_args.items()])
-        logger.debug("resp_headers: %s" % resp.headers)
+        logger.debug("resp_headers: %s", resp.headers)
         return resp
 
     def callback(self, response, session):
@@ -127,7 +127,7 @@ class Client(oic.Client):
 
         userinfo = inforesp.to_dict()
 
-        logger.debug("UserInfo: %s" % inforesp)
+        logger.debug("UserInfo: %s", inforesp)
 
         return userinfo
 
@@ -149,11 +149,10 @@ class Client(oic.Client):
         host = url_parse.netloc
         path = url_parse.path
         body = sign_http_request(sign_key, "RS256", path=path, headers=h_args["headers"],
-                         method=method, host=host)
+                                 method=method, host=host)
         body = urlencode({"http_signature": body})
 
-        logger.debug("[do_user_info_request] PATH:%s BODY:%s H_ARGS: %s" % (
-            url, body, h_args))
+        logger.debug("[do_user_info_request] PATH:%s BODY:%s H_ARGS: %s", url, body, h_args)
 
         try:
             resp = self.http_request(url, method, data=body, **h_args)
@@ -178,7 +177,7 @@ class Client(oic.Client):
         except KeyError:
             _schema = OpenIDSchema
 
-        logger.debug("Reponse text: '%s'" % resp.text)
+        logger.debug("Reponse text: '%s'", resp.text)
 
         _txt = resp.text
         if sformat == "json":

@@ -1,3 +1,4 @@
+# pylint: disable=missing-docstring
 import base64
 import json
 from urllib.parse import parse_qs, parse_qsl
@@ -33,9 +34,7 @@ class PoPProvider(Provider):
         if "token_type" not in atr or atr["token_type"] != "pop":
             return resp
 
-        client_public_key = base64.urlsafe_b64decode(
-            atr["key"].encode("utf-8")).decode(
-            "utf-8")
+        client_public_key = base64.urlsafe_b64decode(atr["key"].encode("utf-8")).decode("utf-8")
         pop_key = json.loads(client_public_key)
         atr = AccessTokenResponse().deserialize(resp.message, method="json")
         data = self.sdb.read(atr["access_token"])
@@ -45,11 +44,10 @@ class PoPProvider(Provider):
                "exp": data["token_expires_at"],
                "nbf": int(time.time()),
                "cnf": {"jwk": pop_key}}
-        jws = JWS(jwt, alg="RS256").sign_compact(
-            self.keyjar.get_signing_key(owner=""))
-        self.access_tokens[jws] = data["access_token"]
+        _jws = JWS(jwt, alg="RS256").sign_compact(self.keyjar.get_signing_key(owner=""))
+        self.access_tokens[_jws] = data["access_token"]
 
-        atr["access_token"] = jws
+        atr["access_token"] = _jws
         atr["token_type"] = "pop"
         return Response(atr.to_json(), content="application/json")
 
@@ -59,13 +57,13 @@ class PoPProvider(Provider):
         http_signature = self._parse_signature(request)
         try:
             verify_http_request(key, http_signature,
-                        method=request["method"],
-                        host=request["host"], path=request["path"],
-                        query_params=request["query"],
-                        headers=request["headers"], body=request["body"],
-                        strict_query_param_verification=True,
-                        strict_headers_verification=False)
-        except ValidationError as exc:
+                                method=request["method"],
+                                host=request["host"], path=request["path"],
+                                query_params=request["query"],
+                                headers=request["headers"], body=request["body"],
+                                strict_query_param_verification=True,
+                                strict_headers_verification=False)
+        except ValidationError:
             return self._error_response("access_denied",
                                         descr="Could not verify proof of possession")
 

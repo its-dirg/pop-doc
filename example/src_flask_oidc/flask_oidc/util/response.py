@@ -1,9 +1,11 @@
+# pylint: disable=missing-docstring,too-few-public-methods
 from oic.utils.http_util import Response
 
 __author__ = 'mathiashedstrom'
 
+
 class FlaskResponse(Response):
-    def __init__(self, call_args={}, **kwargs):
+    def __init__(self, call_args=None, **kwargs):
         super(FlaskResponse, self).__init__(**kwargs)
         self.call_args = call_args
 
