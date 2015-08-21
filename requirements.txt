@@ -1,3 +1,4 @@
-pyoidc
-signed_http_req
-flask
+pytest
+git+https://github.com/its-dirg/pyoidc@py3
+git+https://github.com/rohe/pyjwkest@master
+git+https://github.com/its-dirg/signed-http-req@master
