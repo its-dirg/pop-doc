@@ -1,17 +1,14 @@
 import base64
 from io import BytesIO
 import json
-import os
 from urllib.parse import urlparse, parse_qsl
-from jwkest.jws import JWSig, JWS
-import pytest
 from time import time
-from signed_http_req import sign_http
+
+from jwkest.jws import JWS
+import pytest
 from oic.oauth2 import rndstr
-from oic.oic.consumer import Consumer
-from oic.oic.message import AuthorizationResponse, UserInfoRequest, \
-    AccessTokenRequest, AccessTokenResponse, AuthorizationRequest
-from oic.oic.pop.PoPProvider import PoPProvider
+from oic.oic.message import AuthorizationResponse, AccessTokenRequest, \
+    AccessTokenResponse, AuthorizationRequest
 from oic.utils.authn.authn_context import AuthnBroker
 from oic.utils.authn.client import verify_client
 from oic.utils.authn.user import UserAuthnMethod
@@ -19,6 +16,9 @@ from oic.utils.authz import AuthzHandling
 from oic.utils.keyio import keybundle_from_local_file, KeyJar
 from oic.utils.sdb import SessionDB
 from oic.utils.userinfo import UserInfo
+from signed_http_req import sign_http_request
+
+from pop.PoPProvider import PoPProvider
 
 HOST = "oidc.example.com"
 ISSUER = "https://{}".format(HOST)
@@ -108,7 +108,7 @@ class TestPoPProvider(object):
                                           "HTTP_ACCEPT_ENCODING"]}
 
     def test_token_endpoint(self):
-        atr = self._token_req(self._authz_req())
+        atr = self._pop_token_req(self._authz_req())
         assert atr["token_type"] == "pop"
 
         access_token = atr["access_token"]
@@ -118,14 +118,15 @@ class TestPoPProvider(object):
         assert unpacked_at["cnf"]["jwk"] == self._get_rsa_jwk()
 
     def test_userinfo_endpoint(self, monkeypatch):
-        access_token = self._token_req(self._authz_req())["access_token"]
-        bearer_header = "Bearer {}".format(access_token)
-        signature = sign_http(CLIENT_KEYJAR.get_signing_key(owner="")[0],
-                              "RS256",
-                              ENVIRON["REQUEST_METHOD"],
-                              HOST, "/userinfo",
-                              req_header=dict(
-                                  [("Authorization", bearer_header)]))
+        access_token = self._pop_token_req(self._authz_req())["access_token"]
+        bearer_header = "pop {}".format(access_token)
+        signature = sign_http_request(
+            CLIENT_KEYJAR.get_signing_key(owner="")[0],
+            "RS256",
+            ENVIRON["REQUEST_METHOD"],
+            HOST, "/userinfo",
+            headers=dict(
+                [("Authorization", bearer_header)]))
         body = "http_signature={}".format(signature).encode("utf-8")
         monkeypatch.setitem(ENVIRON, "HTTP_AUTHORIZATION", bearer_header)
         monkeypatch.setitem(ENVIRON, "wsgi.input", BytesIO(body))
@@ -150,7 +151,7 @@ class TestPoPProvider(object):
         return AuthorizationResponse().deserialize(
             urlparse(resp.message).query, "urlencoded")
 
-    def _token_req(self, authz_resp):
+    def _pop_token_req(self, authz_resp):
         pop_key = base64.urlsafe_b64encode(
             json.dumps(self._get_rsa_jwk()).encode("utf-8")).decode("utf-8")
         areq = AccessTokenRequest(code=authz_resp["code"],
