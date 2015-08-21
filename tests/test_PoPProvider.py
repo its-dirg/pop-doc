@@ -1,7 +1,7 @@
 import base64
 from io import BytesIO
 import json
-from urllib.parse import urlparse, parse_qsl
+from six.moves.urllib.parse import urlparse, parse_qsl
 from time import time
 
 from jwkest.jws import JWS

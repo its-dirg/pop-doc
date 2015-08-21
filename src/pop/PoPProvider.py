@@ -1,7 +1,7 @@
 # pylint: disable=missing-docstring
 import base64
 import json
-from urllib.parse import parse_qs, parse_qsl
+from six.moves.urllib.parse import parse_qs, parse_qsl
 
 from jwkest import jws
 from jwkest.jwk import keyrep
@@ -25,7 +25,9 @@ class NonPoPTokenError(Exception):
 class PoPProvider(Provider):
     def __init__(self, *args, **kwargs):
         super(PoPProvider, self).__init__(*args, **kwargs)
-        self.access_tokens = {}  # mapping from signed pop token to access token in db
+
+        # mapping from signed pop token to access token in db
+        self.access_tokens = {}
 
     def token_endpoint(self, dtype='urlencoded', **kwargs):
         atr = AccessTokenRequest().deserialize(kwargs["request"], dtype)
@@ -34,7 +36,8 @@ class PoPProvider(Provider):
         if "token_type" not in atr or atr["token_type"] != "pop":
             return resp
 
-        client_public_key = base64.urlsafe_b64decode(atr["key"].encode("utf-8")).decode("utf-8")
+        client_public_key = base64.urlsafe_b64decode(
+            atr["key"].encode("utf-8")).decode("utf-8")
         pop_key = json.loads(client_public_key)
         atr = AccessTokenResponse().deserialize(resp.message, method="json")
         data = self.sdb.read(atr["access_token"])
@@ -44,7 +47,8 @@ class PoPProvider(Provider):
                "exp": data["token_expires_at"],
                "nbf": int(time.time()),
                "cnf": {"jwk": pop_key}}
-        _jws = JWS(jwt, alg="RS256").sign_compact(self.keyjar.get_signing_key(owner=""))
+        _jws = JWS(jwt, alg="RS256").sign_compact(
+            self.keyjar.get_signing_key(owner=""))
         self.access_tokens[_jws] = data["access_token"]
 
         atr["access_token"] = _jws
@@ -60,7 +64,8 @@ class PoPProvider(Provider):
                                 method=request["method"],
                                 host=request["host"], path=request["path"],
                                 query_params=request["query"],
-                                headers=request["headers"], body=request["body"],
+                                headers=request["headers"],
+                                body=request["body"],
                                 strict_query_param_verification=True,
                                 strict_headers_verification=False)
         except ValidationError:

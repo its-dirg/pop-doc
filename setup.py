@@ -20,6 +20,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     install_requires=[
+        "six",
         "signed-http-req"
     ]
 )
