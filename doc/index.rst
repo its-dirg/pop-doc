@@ -14,7 +14,7 @@ Only some parts of the Internet-Drafts for PoP have been included in the POC and
 * |oauth_pop|
 * |oauth_pop_key_dist|
 * |oauth_sig_req|
-
+* |oauth_pop_arch|
 
 Overview for PoP solution
 =========================
@@ -113,3 +113,9 @@ Details of the implementation
    <a href="https://tools.ietf.org/html/draft-ietf-oauth-signed-http-request-01" target="_top">
    A Method for Signing an HTTP Requests for OAuth
    </a>
+
+.. |oauth_pop_arch| raw:: html
+
+    <a href="https://tools.ietf.org/html/draft-ietf-oauth-pop-architecture-02#section-6" target="_top">
+    OAuth 2.0 Proof-of-Possession (PoP) Security Architecture
+    </a>
