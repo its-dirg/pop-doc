@@ -39,13 +39,13 @@ USERDB = {
 }
 
 PROVIDER_RSA = keybundle_from_local_file(
-    "/Users/regu0004/dev/pyoidc/tests/data/keys/cert.key",
+    "tests/keys/cert.key",
     "RSA", ["ver", "sig"])
 PROVIDER_KEYJAR = KeyJar()
 PROVIDER_KEYJAR[""] = PROVIDER_RSA
 
 CLIENT_RSA = keybundle_from_local_file(
-    "/Users/regu0004/dev/pyoidc/tests/data/keys/rsa.key",
+    "tests/keys/rsa.key",
     "RSA", ["ver", "sig"])
 CLIENT_KEYJAR = KeyJar()
 CLIENT_KEYJAR[""] = CLIENT_RSA
