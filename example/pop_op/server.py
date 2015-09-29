@@ -116,7 +116,7 @@ if __name__ == '__main__':
     ARGS = PARSER.parse_args()
 
     # Client data base
-    CDB = shelve_wrapper.open("client_db", writeback=True)
+    CDB = shelve_wrapper.open("client_db")
 
     sys.path.insert(0, ".")
     CONFIG = importlib.import_module(ARGS.config)
